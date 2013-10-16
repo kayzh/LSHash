@@ -63,9 +63,12 @@ parameters:
     The dimension of the input vector.
 ``num_hashtables = 1``:
     (optional) The number of hash tables used for multiple lookups.
-``storage = None``:
-    (optional) Specify the name of the storage to be used for the index
-    storage. Options include "redis".
+``storage_config = None``:
+    (optional) A dictionary of the form `{backend_name: config}` where
+    `backend_name` is the either `dict` or `redis`, and `config` is the
+    configuration used by the backend. For `redis` it should be in the
+    format of `{"redis": {"host": hostname, "port": port_num}}`, where
+    `hostname` is normally `localhost` and `port` is normally 6379.
 ``matrices_filename = None``:
     (optional) Specify the path to the .npz file random matrices are stored
     or to be stored if the file does not exist yet
