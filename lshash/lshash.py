@@ -151,7 +151,7 @@ class LSHash(object):
             # JSON-serialized in the case of Redis
             try:
                 # Return the point stored as list, without the extra data
-                tuples = json.loads(json_or_tuple)[0]
+                tuples = json.loads(json_or_tuple)
             except TypeError:
                 print("The value stored is not JSON-serilizable")
                 raise
