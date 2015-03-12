@@ -4,6 +4,8 @@
 # This module is part of lshash and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
+from __future__ import unicode_literals
+
 import json
 
 try:
@@ -27,10 +29,6 @@ def storage(storage_config, index):
 
 
 class BaseStorage(object):
-    def __init__(self, config):
-        """ An abstract class used as an adapter printfor storages. """
-        raise NotImplementedError
-
     def keys(self):
         """ Returns a list of binary hashes that are used as dict keys. """
         raise NotImplementedError
@@ -81,14 +79,14 @@ class RedisStorage(BaseStorage):
 
     def keys(self, pattern='*'):
         # return the keys BUT be agnostic with reference to the hash table
-        return [k.split('.')[1] for k in self.storage.keys(self.h_index + pattern)]
+        return [k.decode('ascii').split('.')[1] for k in self.storage.keys(self.h_index + pattern)]
 
     def append_val(self, key, val):
         self.storage.sadd(self._list(key), json.dumps(val))
 
     def get_list(self, key):
         _list = list(self.storage.smembers(self._list(key)))  # list elements are plain strings here
-        _list = [json.loads(el) for el in _list]  # transform strings into python tuples
+        _list = [json.loads(el.decode('ascii')) for el in _list]  # transform strings into python tuples
         for el in _list:
             # if len(el) is 2, then el[1] is the extra value associated to the element
             if len(el) == 2 and type(el[0]) == list:
