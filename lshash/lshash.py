@@ -42,10 +42,14 @@ class LSHash(object):
         stored if the file does not exist yet.
     :param overwrite:
         (optional) Whether to overwrite the matrices file if it already exist
+    :param seed
+        (optional) Seed for PRNG. To get consistant results over multiple
+        instantiation you must use the same seed.
     """
 
     def __init__(self, hash_size, input_dim, num_hashtables=1,
-                 storage_config=None, matrices_filename=None, overwrite=False):
+                 storage_config=None, matrices_filename=None,
+                 overwrite=False, seed=None):
 
         self.hash_size = hash_size
         self.input_dim = input_dim
@@ -59,6 +63,9 @@ class LSHash(object):
             raise ValueError("The specified file name must end with .npz")
         self.matrices_filename = matrices_filename
         self.overwrite = overwrite
+
+        self.seed = seed
+        np.random.seed(self.seed)
 
         self._init_uniform_planes()
         self._init_hashtables()
