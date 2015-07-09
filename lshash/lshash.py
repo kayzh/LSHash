@@ -204,6 +204,24 @@ class LSHash(object):
             table.append_val(self._hash(self.uniform_planes[i], input_point),
                              value)
 
+    def code(self, input_point):
+        """ Calculate LSH code for a single input point. Returns one code of
+        length `hash_size` for each `hash_table`.
+
+        :param input_point:
+            A list, or tuple, or numpy ndarray object that contains numbers
+            only. The dimension needs to be 1 * `input_dim`.
+            This object will be converted to Python tuple and stored in the
+            selected storage.
+        """
+
+        if isinstance(input_point, np.ndarray):
+            input_point = input_point.tolist()
+
+        return [self._hash(self.uniform_planes[i], input_point)
+                for i in xrange(self.num_hashtables)]
+
+
     def query(self, query_point, num_results=None, distance_func=None):
         """ Takes `query_point` which is either a tuple or a list of numbers,
         returns `num_results` of results as a list of tuples that are ranked
