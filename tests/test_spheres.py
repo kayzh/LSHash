@@ -26,17 +26,23 @@ def test_hyperspheres():
     tenthclosest = []
     for D in range(2, 11):
         X = np.random.normal(size=(200000, D))
-        lsh = LSHash(32, D, num_hashtables=D)
+        lsh = LSHash(int(64 / D) + D, D, num_hashtables=D)
+
+        # query vector
+        q = np.random.normal(size=(D,))
+        q /= np.linalg.norm(q)
+
+        distances = []
         for x in X:
             lsh.index(x)
             x /= np.linalg.norm(x)
-        # closest = lsh.query(X[0] + np.array([0.001] * D), distance_func="cosine")
-        x = np.random.normal(size=(D,))
-        x /= np.linalg.norm(x)
-        closest = lsh.query(x, distance_func='cosine')
+            distances += [1 - np.sum(x * q)]
+        distances = sorted(distances)
+        closest = lsh.query(q, distance_func='cosine')
         N = len(closest)
-        tenthclosest += [[D, N, closest[min(9, N - 1)][-1] if N else None]]
+        rank = min(10, N)
+        tenthclosest += [[D, N - 1, closest[rank - 1][-1] if N else None, distances[rank - 1]]]
         print(tenthclosest[-1])
     for i, tc in enumerate(tenthclosest):
-        assert 1e-9 < tc[-1] or 1e-6 < 0.2
+        assert 1e-9 < tc[-2] or 1e-6 < 0.2
     return tenthclosest
