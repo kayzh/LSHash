@@ -1,42 +1,19 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Setup file for lshash.
+    This file was generated with PyScaffold 2.5.6
+"""
 
-import lshash
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+import sys
+from setuptools import setup
 
 
-with open('README.rst') as f:
-    readme = f.read()
+def setup_package():
+    needs_sphinx = {'build_sphinx', 'upload_docs'}.intersection(sys.argv)
+    sphinx = ['sphinx'] if needs_sphinx else []
+    setup(setup_requires=['six', 'pyscaffold>=2.5a0,<2.6a0'] + sphinx,
+          use_pyscaffold=True)
 
-with open('LICENSE') as f:
-    license = f.read()
 
-with open('CHANGES.rst') as f:
-    changes = f.read()
-
-required = ['numpy']
-
-setup(
-    name='lshash',
-    version=lshash.__version__,
-    packages=['lshash'],
-    author='Kay Zhu',
-    author_email='me@kayzhu.com',
-    maintainer='Kay Zhu',
-    maintainer_email='me@kayzhu.com',
-    description='A fast Python implementation of locality sensitive hashing with persistance support.',
-    long_description=readme + '\n\n' + changes,
-    license=license,
-    requires=required,
-    classifiers=[
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Topic :: Software Development :: Libraries',
-        ],
-)
+if __name__ == "__main__":
+    setup_package()
