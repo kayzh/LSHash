@@ -3,17 +3,37 @@
 #
 # This module is part of lshash and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
+# -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals, division, absolute_import
+from builtins import int, round, str,  object  # noqa
+from future import standard_library
+standard_library.install_aliases()  # noqa: Counter, OrderedDict, 
+from past.builtins import basestring   # noqa:
+
+import future        # noqa
+import builtins      # noqa
+import past          # noqa
+import six           # noqa
 
 import os
 import json
 import numpy as np
 
-from storage import storage
+try:
+    from storage import storage  # py2
+except ImportError:
+    from .storage import storage  # py3
 
 try:
     from bitarray import bitarray
 except ImportError:
     bitarray = None
+
+
+try:
+    xrange  # py2
+except NameError:
+    xrange = range  # py3
 
 
 class LSHash(object):
@@ -263,7 +283,7 @@ class LSHash(object):
         # rank candidates by distance function
         candidates = [(ix, d_func(query_point, self._as_np_array(ix)))
                       for ix in candidates]
-        candidates.sort(key=lambda x: x[1])
+        candidates = sorted(candidates, key=lambda x: x[1])
 
         return candidates[:num_results] if num_results else candidates
 
@@ -298,4 +318,4 @@ class LSHash(object):
 
     @staticmethod
     def cosine_dist(x, y):
-        return 1 - np.dot(x, y) / ((np.dot(x, x) * np.dot(y, y)) ** 0.5)
+        return 1 - float(np.dot(x, y)) / ((np.dot(x, x) * np.dot(y, y)) ** 0.5)

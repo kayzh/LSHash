@@ -1,3 +1,4 @@
-# bitarray
+bitarray
 numpy
+storage
 # redis
