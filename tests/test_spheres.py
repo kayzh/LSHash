@@ -31,7 +31,7 @@ def test_sphere():
 
 
 def test_hyperspheres(X=np.random.uniform(size=(200000, 10))):
-    """ Demonstrate curse of dimensionality and where LSH starts to fail
+    """ Demonstrate curse of dimensionality and where LSH starts to fail 
 
     Returns:
       lsh, X, secondclosest, tenthclosest
@@ -56,12 +56,10 @@ def test_hyperspheres(X=np.random.uniform(size=(200000, 10))):
 
         N = len(closest)
         rank = min(10, N)
-        tenthclosest += [[D, min(10, N), closest[rank - 1][-1] if N else None, distances[rank - 1]]]
-        secondclosest += [[D, min(2, N), closest[min(2, N) - 1][-1] if N else None, distances[min(2, N) - 1]]]
-        for row in tenthclosest:
-            print(row)
-        for row in secondclosest:
-            print(row)
+        tenthclosest += [[D, N - 1, closest[rank - 1][-1] if N else None, distances[rank - 1]]]
+        print(tenthclosest[-1])
+        secondclosest += [[D, N - 1, closest[min(2, N) - 1][-1] if N else None, distances[rank - 1]]]
+        print(secondclosest[-1])
     for i, tc in enumerate(tenthclosest):
         assert 1e-9 < tc[-2] or 1e-6 < 0.2
     return lsh, X, secondclosest, tenthclosest
