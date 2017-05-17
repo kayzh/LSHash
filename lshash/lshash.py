@@ -8,7 +8,7 @@ import os
 import json
 import numpy as np
 
-from storage import storage
+from .storage import storage
 
 try:
     from bitarray import bitarray
@@ -92,7 +92,7 @@ class LSHash(object):
                     self.uniform_planes = [t[1] for t in npzfiles]
             else:
                 self.uniform_planes = [self._generate_uniform_planes()
-                                       for _ in xrange(self.num_hashtables)]
+                                       for _ in range(self.num_hashtables)]
                 try:
                     np.savez_compressed(self.matrices_filename,
                                         *self.uniform_planes)
@@ -101,14 +101,14 @@ class LSHash(object):
                     raise
         else:
             self.uniform_planes = [self._generate_uniform_planes()
-                                   for _ in xrange(self.num_hashtables)]
+                                   for _ in range(self.num_hashtables)]
 
     def _init_hashtables(self):
         """ Initialize the hash tables such that each record will be in the
         form of "[storage1, storage2, ...]" """
 
         self.hash_tables = [storage(self.storage_config, i)
-                            for i in xrange(self.num_hashtables)]
+                            for i in range(self.num_hashtables)]
 
     def _generate_uniform_planes(self):
         """ Generate uniformly distributed hyperplanes and return it as a 2D
