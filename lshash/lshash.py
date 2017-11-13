@@ -195,7 +195,7 @@ class LSHash(object):
         if isinstance(input_point, np.ndarray):
             input_point = input_point.tolist()
 
-        if extra_data:
+        if extra_data is not None:
             value = (tuple(input_point), extra_data)
         else:
             value = tuple(input_point)
