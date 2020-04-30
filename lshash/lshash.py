@@ -8,7 +8,7 @@ import os
 import json
 import numpy as np
 
-from storage import storage
+from lshash.storage import storage
 
 try:
     from bitarray import bitarray
